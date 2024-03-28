@@ -14,7 +14,7 @@ def DisplaySigns(char):
     """
     Exibe sinais de operação na tela ao pressionar os botões de operação.
     Verifica se já há um sinal de operação no final da expressão para evitar erros.
-    Permite apenas a colocação de um sinal de operação no inicio que é o sinal '-' para números negativos.
+    Permite apenas a colocação do sinal de menos (-) no inicio para números negativos.
     """
     if len(screen.get()) == 0 and char == "-" :
         pass
@@ -37,7 +37,6 @@ def ClearLastEntry():
 def GetResult():
     """
     Calcula o resultado da expressão na tela.
-    Realiza a substituição dos sinais de divisão e multiplicação para a avaliação correta da expressão.
     """
     for sign in SIGNS:
         if sign in screen.get():
