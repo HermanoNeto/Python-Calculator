@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+import numexpr as ne
+import sv_ttk
 
 
 SIGNS = ["+", "-", "x", "÷"]
 BGCOLOR = "#68838B"
-THEME = "default"  # ["clam", "alt", "default", "classic"]
 
 def DisplayNumbers(num):
     """Exibe números na tela ao pressionar os botões numéricos."""
@@ -35,56 +36,43 @@ def ClearLastEntry():
     screen.delete(lastEntry, END)
 
 def GetResult():
-    """
-    Calcula o resultado da expressão na tela.
-    """
-    for sign in SIGNS:
-        if sign in screen.get():
-            calculation = screen.get()
-            try:
-                value = eval(calculation)
-                ClearScreen()
-                return screen.insert(END, str(value))
-            except SyntaxError:
-                if sign == "÷":
-                    calcRep = calculation.replace("÷", "/")
-                    value = eval(calcRep)
-                if sign == "x":
-                    calcRep = calculation.replace("x", "*")
-                    value = eval(calcRep)
-                ClearScreen()
-                return screen.insert(END, str(value))
+    """Calcula o resultado da expressão na tela."""
+    calculation = screen.get().replace("÷", "/").replace("x", "*")
+    value = ne.evaluate(calculation)
+    ClearScreen()
+    return screen.insert(END, str(value))
 
-
+# Janela
 window = Tk()
 window.title("Calculadora")
 window.configure(background=BGCOLOR)
-ttk.Style().theme_use(THEME)
+sv_ttk.set_theme("dark")
 
-screen = Entry(window, width=30)
+# Tela da calculadora
+screen = Entry(window, width=20,font="arial")
 screen.grid(column=0, row=0, columnspan=4, padx=30, pady=10, ipady=10)
 
 # Botões numéricos
-but1 = ttk.Button(window, text="1", width=5, command=lambda t=1: DisplayNumbers(t)).grid(column=0, row=2, pady=10)
-but2 = ttk.Button(window, text="2", width=5, command=lambda t=2: DisplayNumbers(t)).grid(column=1, row=2)
-but3 = ttk.Button(window, text="3", width=5, command=lambda t=3: DisplayNumbers(t)).grid(column=2, row=2)
-but4 = ttk.Button(window, text="4", width=5, command=lambda t=4: DisplayNumbers(t)).grid(column=0, row=3, pady=7)
-but5 = ttk.Button(window, text="5", width=5, command=lambda t=5: DisplayNumbers(t)).grid(column=1, row=3)
-but6 = ttk.Button(window, text="6", width=5, command=lambda t=6: DisplayNumbers(t)).grid(column=2, row=3)
-but7 = ttk.Button(window, text="7", width=5, command=lambda t=7: DisplayNumbers(t)).grid(column=0, row=4, pady=7)
-but8 = ttk.Button(window, text="8", width=5, command=lambda t=8: DisplayNumbers(t)).grid(column=1, row=4)
-but9 = ttk.Button(window, text="9", width=5, command=lambda t=9: DisplayNumbers(t)).grid(column=2, row=4)
-but0 = ttk.Button(window, text="0", width=5, command=lambda t=0: DisplayNumbers(t)).grid(column=1, row=5, pady=7)
+but1 = ttk.Button(window, text="1", width=3, command=lambda t=1: DisplayNumbers(t)).grid(column=0, row=2, pady=10)
+but2 = ttk.Button(window, text="2", width=3, command=lambda t=2: DisplayNumbers(t)).grid(column=1, row=2)
+but3 = ttk.Button(window, text="3", width=3, command=lambda t=3: DisplayNumbers(t)).grid(column=2, row=2)
+but4 = ttk.Button(window, text="4", width=3, command=lambda t=4: DisplayNumbers(t)).grid(column=0, row=3, pady=7)
+but5 = ttk.Button(window, text="5", width=3, command=lambda t=5: DisplayNumbers(t)).grid(column=1, row=3)
+but6 = ttk.Button(window, text="6", width=3, command=lambda t=6: DisplayNumbers(t)).grid(column=2, row=3)
+but7 = ttk.Button(window, text="7", width=3, command=lambda t=7: DisplayNumbers(t)).grid(column=0, row=4, pady=7)
+but8 = ttk.Button(window, text="8", width=3, command=lambda t=8: DisplayNumbers(t)).grid(column=1, row=4)
+but9 = ttk.Button(window, text="9", width=3, command=lambda t=9: DisplayNumbers(t)).grid(column=2, row=4)
+but0 = ttk.Button(window, text="0", width=3, command=lambda t=0: DisplayNumbers(t)).grid(column=1, row=5, pady=7)
 
 # Botões de operação
-plusSign = ttk.Button(window, text="+", width=5, command=lambda t="+": DisplaySigns(t)).grid(column=3, row=2)
-minusSign = ttk.Button(window, text="-", width=5, command=lambda t="-": DisplaySigns(t)).grid(column=3, row=3)
-multiplicationSign = ttk.Button(window, text="x", width=5, command=lambda t="x": DisplaySigns(t)).grid(column=3, row=4)
-divisionSign = ttk.Button(window, text="÷", width=5, command=lambda t="÷": DisplaySigns(t)).grid(column=3, row=5)
+plusSign = ttk.Button(window, text="+", width=3, command=lambda t="+": DisplaySigns(t)).grid(column=3, row=2)
+minusSign = ttk.Button(window, text="-", width=3, command=lambda t="-": DisplaySigns(t)).grid(column=3, row=3)
+multiplicationSign = ttk.Button(window, text="x", width=3, command=lambda t="x": DisplaySigns(t)).grid(column=3, row=4)
+divisionSign = ttk.Button(window, text="÷", width=3, command=lambda t="÷": DisplaySigns(t)).grid(column=3, row=5)
 
 # Botões de resultado e limpeza
-equalSign = ttk.Button(window, text="=", width=35, command=GetResult).grid(column=0, row=6, columnspan=4, pady=5)
-clear = ttk.Button(window, text="C", width=15, command=ClearScreen).grid(column=0, row=1, columnspan=2)
-clearEntry = ttk.Button(window, text="CE", width=15, command=ClearLastEntry).grid(column=2, row=1, columnspan=2)
+equalSign = ttk.Button(window, text="=", width=27, command=GetResult).grid(column=0, row=6, columnspan=4, pady=5)
+clear = ttk.Button(window, text="C", width=11, command=ClearScreen).grid(column=0, row=1, columnspan=2)
+clearEntry = ttk.Button(window, text="CE", width=11, command=ClearLastEntry).grid(column=2, row=1, columnspan=2)
 
 window.mainloop()
